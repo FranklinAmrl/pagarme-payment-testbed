@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h3>Registro de cartão<h3>
+    <form method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <button class="waves-effect waves-light btn-large" type="submit">Registrar</button>
+    </form>
+</div>
+{% endblock %}

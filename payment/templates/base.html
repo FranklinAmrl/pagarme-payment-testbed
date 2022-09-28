@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-  <title>Payment E-commerce - Testbed</title>
+  <title>Testeb - Pagar.me</title>
 
   <!-- CSS  -->
 {% block css %}
@@ -14,9 +14,9 @@
 </head>
 <body>
   <nav style="background-color: #26a69a;" class="lighten-1" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo"><svg xmlns="http://www.w3.org/2000/svg" width="160" height="57.107" viewBox="0 0 160 57.107">
+    <div class="nav-wrapper container"><a id="logo-container" href="{% url 'home' %}" class="brand-logo"><svg xmlns="http://www.w3.org/2000/svg" width="160" height="57.107" viewBox="0 0 160 57.107">
       <defs>
-          <style>
+          <style> 
               .cls-1{fill:#65A300}.cls-2{fill:#1B1C29}.cls-3{fill:#454550}
           </style>
       </defs>
@@ -28,9 +28,9 @@
   </svg></a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li><a href="#">Registrar usuário</a></li>
-        <li><a href="#">Registrar cartão</a></li>
-        <li><a href="#">Pagamento por cartão</a></li>
-        <li><a href="#">Pagamento por Pix</a></li>
+        <li><a href="{% url 'card_registration' %}">Registrar cartão</a></li>
+        <li><a href="{% url 'card_payment' %}">Pagamento por cartão</a></li>
+        <li><a href="{% url 'pix_payment' %}">Pagamento por Pix</a></li>
       </ul>
 
       <ul id="nav-mobile" class="sidenav">
@@ -62,6 +62,11 @@
 
     });
     </script>
+    <style>
+      label  {
+        font-size: 1.2rem;
+      }
+    </style>
     
     {% endblock javascript %}
 

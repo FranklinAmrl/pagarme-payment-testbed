@@ -1,18 +1,39 @@
 from django import forms
+from django.core.validators import MaxLengthValidator
 
 
 class CardRegistrationForm(forms.Form):
-    item_value = forms.DecimalField(label="Valor do item")
-    amount_split = forms.IntegerField(
-        label="Percentual da comissão para você", max_value=100
-    )
-    name = forms.CharField(label="Nome")
-    email = forms.EmailField()
-    cpf = forms.CharField(
-        label="CPF",
+    number = forms.CharField(
+        label="Número do cartão",
         widget=forms.TextInput(
             attrs={"onkeypress": "return event.charCode >= 48 && event.charCode <= 57"}
         ),
-        max_length=11,
+        max_length=19,
     )
-    phone = forms.IntegerField(label="Telefone")
+    holber_name = forms.CharField(label="Nome do títular do cartão")
+    exp_month = forms.IntegerField(label="Mẽs de expiração (Exemplo: XX)", max_value=12)
+    exp_year = forms.IntegerField(
+        label="Ano de expiração (Exemplo: XX ou XXXX)",
+        validators=[MaxLengthValidator(4)],
+    )
+    cvv = forms.CharField(
+        label="CVV (Código de segurança do cartão)",
+        widget=forms.TextInput(
+            attrs={"onkeypress": "return event.charCode >= 48 && event.charCode <= 57"}
+        ),
+        max_length=4,
+    )
+    country = forms.CharField(label="País")
+    state = forms.CharField(label="Estado")
+    city = forms.CharField(label="Cidade", max_length=64)
+    zip_code = forms.CharField(
+        label="CEP",
+        widget=forms.TextInput(
+            attrs={
+                "onkeypress": "return event.charCode >= 48 && event.charCode <= 57",
+                "size": "40",
+            }
+        ),
+        max_length=16,
+    )
+    line_1 = forms.CharField(label="Endereço", max_length=256)
