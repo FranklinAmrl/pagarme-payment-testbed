@@ -3,14 +3,14 @@ from pagarme_integration.payment_gateway import PaymentGatewayClass
 
 
 class PixPaymentForm(forms.Form):
-    item_value = forms.DecimalField(label="Valor do item")
+    customer_id = forms.ChoiceField(label="Usuário comprador")
+    amount = forms.DecimalField(label="Valor do item")
     amount_split_for_company = forms.IntegerField(
         label="Percentual da comissão para organização", max_value=100
     )
     amount_split_for_affiliate = forms.IntegerField(
         label="Percentual da comissão para o afiliado", max_value=100
     )
-    customer_id = forms.ChoiceField(label="Usuário comprador")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -10,16 +10,37 @@ class CardRegistrationForm(forms.Form):
         ),
         max_length=19,
     )
-    holber_name = forms.CharField(label="Nome do títular do cartão")
-    exp_month = forms.IntegerField(label="Mẽs de expiração (Exemplo: XX)", max_value=12)
+    holder_name = forms.CharField(
+        label="Nome do títular do cartão",
+        widget=forms.TextInput(
+            attrs={"placeholder": "Escreva igual como está impresso no cartão."}
+        ),
+    )
+    exp_month = forms.IntegerField(
+        label="Mẽs de expiração",
+        max_value=12,
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Exemplo: XX.",
+            }
+        ),
+    )
     exp_year = forms.IntegerField(
-        label="Ano de expiração (Exemplo: XX ou XXXX)",
+        label="Ano de expiração",
         validators=[MaxLengthValidator(4)],
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Exemplo: XX ou XXXX.",
+            }
+        ),
     )
     cvv = forms.CharField(
-        label="CVV (Código de segurança do cartão)",
+        label="CVV",
         widget=forms.TextInput(
-            attrs={"onkeypress": "return event.charCode >= 48 && event.charCode <= 57"}
+            attrs={
+                "onkeypress": "return event.charCode >= 48 && event.charCode <= 57",
+                "placeholder": "Código de segurança do cartão.",
+            }
         ),
         max_length=4,
     )
