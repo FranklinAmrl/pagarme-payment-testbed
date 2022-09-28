@@ -4,6 +4,7 @@ from payment.views.card_registration import CardRegistrationFormView
 
 from payment.views.home import HomeView
 from payment.views.pix_payment import PixPaymentFormView
+from payment.views.user_registration import UserRegistrationFormView
 
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),
@@ -13,5 +14,10 @@ urlpatterns = [
         "card-registration",
         CardRegistrationFormView.as_view(),
         name="card_registration",
+    ),
+    path(
+        "user-registration",
+        UserRegistrationFormView.as_view(),
+        name="user_registration",
     ),
 ]

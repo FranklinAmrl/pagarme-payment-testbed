@@ -6,7 +6,10 @@ class CardRegistrationForm(forms.Form):
     number = forms.CharField(
         label="Número do cartão",
         widget=forms.TextInput(
-            attrs={"onkeypress": "return event.charCode >= 48 && event.charCode <= 57"}
+            attrs={
+                "onkeypress": "return event.charCode >= 48 && event.charCode <= 57",
+                "placeholder": "Escreva igual como está impresso no cartão.",
+            }
         ),
         max_length=19,
     )
