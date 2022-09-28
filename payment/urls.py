@@ -1,8 +1,10 @@
 from django.urls import path
 
+from payment.views.home import HomeView
+from payment.views.pix_payment import PixPaymentFormView
+
+
 urlpatterns = [
-    path("", name="home"),
-    path("", name="pix_payment"),
-    path("", name="card_payment"),
-    path("", name="card_registration"),
+    path("", HomeView.as_view(), name="home"),
+    path("pix-payment", PixPaymentFormView.as_view(), name="pix_payment"),
 ]

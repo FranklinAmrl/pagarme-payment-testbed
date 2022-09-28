@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h4>Pagamento por PIX<h4>
+    <form method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <button class="waves-effect waves-light btn-large" type="submit">Pagar em PIX</button>
+    </form>
+</div>
+{% endblock %}
