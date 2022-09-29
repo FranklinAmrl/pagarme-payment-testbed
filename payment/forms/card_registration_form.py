@@ -1,8 +1,10 @@
 from django import forms
 from django.core.validators import MaxLengthValidator
+from pagarme_integration.payment_gateway import PaymentGatewayClass
 
 
 class CardRegistrationForm(forms.Form):
+    customer_id = forms.ChoiceField(label="Usuário comprador")
     number = forms.CharField(
         label="Número do cartão",
         widget=forms.TextInput(
@@ -24,7 +26,7 @@ class CardRegistrationForm(forms.Form):
         max_value=12,
         widget=forms.TextInput(
             attrs={
-                "placeholder": "Exemplo: XX.",
+                "placeholder": "Escreva igual como está impresso no cartão. Exemplo: XX.",
             }
         ),
     )
@@ -33,7 +35,7 @@ class CardRegistrationForm(forms.Form):
         validators=[MaxLengthValidator(4)],
         widget=forms.TextInput(
             attrs={
-                "placeholder": "Exemplo: XX ou XXXX.",
+                "placeholder": "Escreva igual como está impresso no cartão. Exemplo: XX ou XXXX.",
             }
         ),
     )
@@ -47,17 +49,52 @@ class CardRegistrationForm(forms.Form):
         ),
         max_length=4,
     )
-    country = forms.CharField(label="País")
-    state = forms.CharField(label="Estado")
-    city = forms.CharField(label="Cidade", max_length=64)
+    country = forms.CharField(
+        label="País",
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Escreva o seu país de naturalidade.",
+            }
+        ),
+    )
+    state = forms.CharField(
+        label="Estado",
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Escreva o estado que você nasceu.",
+            }
+        ),
+    )
+    city = forms.CharField(
+        label="Cidade",
+        max_length=64,
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Escreva a cidade que você nasceu.",
+            }
+        ),
+    )
     zip_code = forms.CharField(
         label="CEP",
         widget=forms.TextInput(
             attrs={
                 "onkeypress": "return event.charCode >= 48 && event.charCode <= 57",
                 "size": "40",
+                "placeholder": "Escreva o código postal do seu logradouro.",
             }
         ),
         max_length=16,
     )
     line_1 = forms.CharField(label="Endereço", max_length=256)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        customers_list = [(None, "Selecione o usuário comprador")]
+
+        gateway = PaymentGatewayClass(key="sk_M7Vep2XtDCNp5yKz")
+
+        for customer in gateway.get_customers():
+            customers_list.append((customer.get("id"), customer.get("name")))
+
+        self.fields.get("customer_id").choices = tuple(customers_list)

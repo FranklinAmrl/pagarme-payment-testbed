@@ -1,6 +1,58 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container">
-
+<div class="container section">
+    <h3>Selecione qual serviço deseja usar</h3>
+    <div class="row">
+        <div class="col l6 s12 m6">
+            <div class="card">
+            <div class="card-content">
+                <span class="card-title">Registro de usuário comprador</span>
+                <p>Você registrará um usuário para realizar o pagamento na plataforma Pagar.me.</p>
+                <br></br>
+                <div class="card-action">
+                  <a href="{% url 'user_registration' %}">Ir agora</a>
+                </div>
+            </div>
+          </div>
+        </div>        
+        <div class="col l6 s12 m6">
+            <div class="card">
+            <div class="card-content">
+                <span class="card-title">Registro do cartão</span>
+                <p>Você registrará um cartão na plataforma Pagar.me para o usuário selecionado.</p>
+                <br></br>
+                <div class="card-action">
+                  <a href="{% url 'card_registration' %}">Ir agora</a>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col l6 s12 m6">
+            <div class="card">
+            <div class="card-content">
+                <span class="card-title">Pagamento com cartão</span>
+                <p>Você fará um pagamento com cartão, selecionando o usuário comprador e um respectivo cartão</p>
+                <br></br>
+                <div class="card-action">
+                  <a href="{% url 'card_payment' %}">Ir agora</a>
+                </div>
+            </div>
+          </div>
+        </div>        
+        <div class="col l6 s12 m6">
+            <div class="card">
+            <div class="card-content">
+                <span class="card-title">Pagamento com PIX</span>
+                <p>Você fará um pagamento com PIX, selecionando o usuário comprador e gerará um QRcode.</p>
+                <br></br>
+                <div class="card-action">
+                  <a href="{% url 'pix_payment' %}">Ir agora</a>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

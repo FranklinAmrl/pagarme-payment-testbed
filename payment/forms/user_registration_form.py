@@ -21,33 +21,33 @@ class UserRegistrationForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "onkeypress": "return event.charCode >= 48 && event.charCode <= 57",
-                "placeholder": "Escreva o seu CPF. Exemplo: XXXXXXXXXXX",
+                "placeholder": "Escreva o seu CPF. Exemplo: XXXXXXXXXXX.",
             }
         ),
-        max_length=256,
+        max_length=11,
     )
     country_code = forms.CharField(
-        label="Código do país",
+        label="Discagem Direta Internacional (DDI)",
         widget=forms.TextInput(
             attrs={
                 "onkeypress": "return event.charCode >= 48 && event.charCode <= 57",
-                "placeholder": "Escreva o código do país. Exemplo: Se for Brasil, escreva 55",
+                "placeholder": "Escreva o código do país. Exemplo: Se for Brasil, escreva 55.",
             }
         ),
         max_length=3,
     )
     area_code = forms.CharField(
-        label="DDD",
+        label="Discagem Direta à distância (DDD)",
         widget=forms.TextInput(
             attrs={
                 "onkeypress": "return event.charCode >= 48 && event.charCode <= 57",
-                "placeholder": "Escreva o código telefônico do estado. Exemplo: Se for Pernambuco, escreva 081",
+                "placeholder": "Escreva o código telefônico do estado. Exemplo: Se for Pernambuco, escreva 081.",
             }
         ),
         max_length=3,
     )
     number = forms.CharField(
-        label="Númmero",
+        label="Número",
         widget=forms.TextInput(
             attrs={
                 "onkeypress": "return event.charCode >= 48 && event.charCode <= 57",
