@@ -1,5 +1,4 @@
 from django import forms
-from django.core.validators import MaxLengthValidator
 
 
 class UserRegistrationForm(forms.Form):
@@ -16,7 +15,7 @@ class UserRegistrationForm(forms.Form):
         label="Email",
         widget=forms.TextInput(attrs={"placeholder": "Escreva o seu email."}),
     )
-    cpf = forms.CharField(
+    document = forms.CharField(
         label="CPF",
         widget=forms.TextInput(
             attrs={

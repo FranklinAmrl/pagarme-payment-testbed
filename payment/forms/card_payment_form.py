@@ -1,5 +1,5 @@
 from django import forms
-from pagarme_integration.payment_gateway import PaymentGatewayClass
+from ..views import gateway
 
 
 class CardPaymentForm(forms.Form):
@@ -28,8 +28,6 @@ class CardPaymentForm(forms.Form):
 
         customers_list = [(None, "Selecione o usuário comprador")]
         cards_list = [(None, "Selecione o cartão para pagamento")]
-
-        gateway = PaymentGatewayClass(key="sk_M7Vep2XtDCNp5yKz")
 
         for customer in gateway.get_customers():
             customers_list.append((customer.get("id"), customer.get("name")))
