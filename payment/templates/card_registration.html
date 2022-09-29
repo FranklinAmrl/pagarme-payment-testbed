@@ -2,9 +2,22 @@
 {% block content %}
 <div class="container">
     <h3>Registro de cartão<h3>
-    <form method="post">{% csrf_token %}
+        <form method="post">
+        {% csrf_token %}
+        {% if messages %}
+            <ul class="messages error">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
         {{ form.as_p }}
         <button class="waves-effect waves-light btn-large" type="submit">Registrar</button>
     </form>
 </div>
+<style>
+    .error{
+        color: red;
+    }
+</style>
 {% endblock %}

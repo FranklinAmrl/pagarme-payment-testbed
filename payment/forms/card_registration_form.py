@@ -24,7 +24,7 @@ class CardRegistrationForm(forms.Form):
     exp_month = forms.IntegerField(
         label="Mẽs de expiração",
         max_value=12,
-        widget=forms.TextInput(
+        widget=forms.NumberInput(
             attrs={
                 "placeholder": "Escreva igual como está impresso no cartão. Exemplo: XX.",
             }
@@ -32,7 +32,6 @@ class CardRegistrationForm(forms.Form):
     )
     exp_year = forms.IntegerField(
         label="Ano de expiração",
-        validators=[MaxLengthValidator(4)],
         widget=forms.TextInput(
             attrs={
                 "placeholder": "Escreva igual como está impresso no cartão. Exemplo: XX ou XXXX.",
@@ -56,6 +55,7 @@ class CardRegistrationForm(forms.Form):
                 "placeholder": "Escreva o seu país de naturalidade.",
             }
         ),
+        max_length=2,
     )
     state = forms.CharField(
         label="Estado",
@@ -64,6 +64,7 @@ class CardRegistrationForm(forms.Form):
                 "placeholder": "Escreva o estado que você nasceu.",
             }
         ),
+        max_length=6,
     )
     city = forms.CharField(
         label="Cidade",

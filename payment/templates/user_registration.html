@@ -2,14 +2,20 @@
 {% block content %}
 <div class="container">
     <h3>Registro do usuário comprador<h3>
-    <form method="post" onsubmit="success()">{% csrf_token %}
+    <form method="post">
+        {% csrf_token %}
+        {% if messages %}
+        <ul class="messages error">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+       {% endif %}
         {{ form.as_p }}
         <button class="waves-effect waves-light btn-large" type="submit">Registrar</button>
     </form>
 </div>
 <script>
-    function success(){
-        M.toast({html: 'Registro feito com sucesso!'})
-    }
+
 </script>
 {% endblock %}

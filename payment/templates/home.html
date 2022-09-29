@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container section">
+  {% if messages %}
+  <ul class="messages success">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+  </ul>
+  {% endif %}
     <h3>Selecione qual serviço deseja usar</h3>
     <div class="row">
         <div class="col l6 s12 m6">
