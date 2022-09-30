@@ -9,9 +9,20 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-import os
 
 from pathlib import Path
+
+import environ
+import os
+
+env = environ.Env()
+environ.Env.read_env()
+
+KEY_GATEWAY = env("KEY_GATEWAY")
+
+ORG_RECIPIENT_ID = env("ORG_RECIPIENT_ID")
+
+AFFILIATE_RECIPIENT_ID = env("AFFILIATE_RECIPIENT_ID")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +38,7 @@ SECRET_KEY = "django-insecure-m@c0!)vwk*(s)ywjf4!*s9khh5l474yl2rh6)h7&f_-9lg)h4e
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-
+# CSRF_TRUSTED_ORIGINS = [""]
 
 # Application definition
 
@@ -127,3 +138,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

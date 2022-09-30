@@ -1,3 +1,5 @@
 from pagarme_integration.payment_gateway import PaymentGatewayClass
 
-gateway = PaymentGatewayClass(key="sk_M7Vep2XtDCNp5yKz")
+from django.conf import settings
+
+gateway = PaymentGatewayClass(key=settings.KEY_GATEWAY)

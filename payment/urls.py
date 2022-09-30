@@ -4,6 +4,7 @@ from payment.views.card_registration import CardRegistrationFormView
 
 from payment.views.home import HomeView
 from payment.views.pix_payment import PixPaymentFormView
+from payment.views.qrcode_payment import QrcodePayment
 from payment.views.user_registration import UserRegistrationFormView
 
 urlpatterns = [
@@ -20,4 +21,5 @@ urlpatterns = [
         UserRegistrationFormView.as_view(),
         name="user_registration",
     ),
+    path("qrcode-payment", QrcodePayment.as_view(), name="qrcode_payment"),
 ]
