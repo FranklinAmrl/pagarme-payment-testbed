@@ -5,7 +5,7 @@ from pagarme_integration.payment_gateway import PaymentGatewayClass
 
 class CardRegistrationForm(forms.Form):
     customer_id = forms.ChoiceField(label="Usuário comprador")
-    number = forms.CharField(
+    statement_descriptor = forms.CharField(
         label="Número do cartão",
         widget=forms.TextInput(
             attrs={
@@ -99,3 +99,5 @@ class CardRegistrationForm(forms.Form):
             customers_list.append((customer.get("id"), customer.get("name")))
 
         self.fields.get("customer_id").choices = tuple(customers_list)
+
+        

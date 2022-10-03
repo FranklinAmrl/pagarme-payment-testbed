@@ -1,9 +1,10 @@
 from django import forms
 from ..views import gateway
 
+from ..views import card_payment
+
 
 class CardPaymentForm(forms.Form):
-    customer_id = forms.ChoiceField(label="Usuário comprador")
     card_id = forms.ChoiceField(label="Cartão para pagamento")
     cvv = forms.CharField(
         label="CVV",
@@ -23,15 +24,19 @@ class CardPaymentForm(forms.Form):
         label="Percentual da comissão para o afiliado", max_value=100
     )
 
+    def get_customer_id(self, request):
+        customer_id = request.GET.get("customer_id")
+        return customer_id
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        customers_list = [(None, "Selecione o usuário comprador")]
         cards_list = [(None, "Selecione o cartão para pagamento")]
 
-        for customer in gateway.get_customers():
-            customers_list.append((customer.get("id"), customer.get("name")))
+        customer_id = str(self.get_customer_id("customer_id"))
 
-        self.fields.get("customer_id").choices = tuple(customers_list)
+        cards = gateway.get_cards(customer_id=customer_id)
 
+        for card in cards:
+            cards_list.append(card.get("id"))
         self.fields.get("card_id").choices = tuple(cards_list)

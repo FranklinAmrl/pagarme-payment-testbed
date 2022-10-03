@@ -21,14 +21,14 @@ class BillingAddress:
 class Card:
     def __init__(
         self,
-        number,
+        statement_descriptor,
         holder_name,
         exp_month,
         exp_year,
         cvv,
         billing_address,
     ) -> None:
-        self.number = number
+        self.statement_descriptor = statement_descriptor
         self.holder_name = holder_name
         self.exp_month = exp_month
         self.exp_year = exp_year
@@ -54,7 +54,7 @@ class CardRegistrationFormView(FormView):
         ).__dict__
 
         payload = Card(
-            number=data.get("number"),
+            statement_descriptor=data.get("statement_descriptor"),
             holder_name=data.get("holder_name"),
             exp_month=int(data.get("exp_month")),
             exp_year=int(data.get("exp_year")),
