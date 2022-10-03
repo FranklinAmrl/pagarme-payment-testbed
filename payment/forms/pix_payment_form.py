@@ -5,12 +5,31 @@ from ..views import gateway
 
 class PixPaymentForm(forms.Form):
     customer_id = forms.ChoiceField(label="Usuário comprador")
-    amount = forms.IntegerField(label="Valor do item")
+    amount = forms.IntegerField(
+        label="Valor do item",
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Percentual da comissão para organização.",
+            }
+        ),
+    )
     amount_split_for_company = forms.IntegerField(
-        label="Percentual da comissão para organização", max_value=100
+        label="Percentual da comissão para organização",
+        max_value=100,
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Percentual da comissão para organização.",
+            }
+        ),
     )
     amount_split_for_affiliate = forms.IntegerField(
-        label="Percentual da comissão para o afiliado", max_value=100
+        label="Percentual da comissão para o afiliado",
+        max_value=100,
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "Percentual da comissão para o afiliado.",
+            }
+        ),
     )
 
     def __init__(self, *args, **kwargs):

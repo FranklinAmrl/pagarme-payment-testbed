@@ -1,4 +1,6 @@
-from django.views.generic.edit import FormView
+import re
+from django.shortcuts import render
+from django.views.generic import TemplateView
 
 from payment.forms.card_payment_form import CardPaymentForm
 
@@ -57,78 +59,85 @@ class CardPayment:
         self.payments = payments
 
 
-class CardPaymentFormView(FormView):
+class CardPaymentFormView(TemplateView):
     template_name = "card_payment.html"
-    form_class = CardPaymentForm
     success_url = "/"
 
-    def get_customer_id(self, request):
+    def get(self, request, *args, **kwargs):
         customer_id = request.GET.get("customer_id")
-        return customer_id
+        cards = gateway.get_cards(customer_id=customer_id)
+        cards_list = [(None, "Selecione o cartão para pagamento")]
+        for card in cards:
+            cards_list.append(
+                (card.get("id"), f'**** **** **** {card.get("last_four_digits")}')
+            )
+        form = CardPaymentForm(initial={"card_list": tuple(cards_list)})
+        context = {}
+        context["form"] = form
+        return render(request, self.template_name, {"form": form})
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context["customer_id"] = self.request.GET.get("customer_id")
-    #     return context
-
-    def form_valid(self, form):
+    def post(self, request):
         # This method is called when valid form data has been POSTed.
         # It should return an HttpResponse.
-        data = form.cleaned_data
+        form = CardPaymentForm(request.POST)
 
-        obj_options_org = Options(
-            charge_processing_fee=True, charge_remainder_fee=True, liable=True
-        ).__dict__
+        if form.is_valid():
+            data = form.cleaned_data
 
-        obj_options_affiliate = Options(
-            charge_processing_fee=False, charge_remainder_fee=False, liable=False
-        ).__dict__
+            obj_options_org = Options(
+                charge_processing_fee=True, charge_remainder_fee=True, liable=True
+            ).__dict__
 
-        obj_split_org = Split(
-            options=obj_options_org,
-            type="percentage",
-            amount=str(data.get("amount_split_for_company")),
-            recipient_id=settings.ORG_RECIPIENT_ID,
-        ).__dict__
+            obj_options_affiliate = Options(
+                charge_processing_fee=False, charge_remainder_fee=False, liable=False
+            ).__dict__
 
-        obj_split_affiliate = Split(
-            options=obj_options_affiliate,
-            type="percentage",
-            amount=str(data.get("amount_split_for_affiliate")),
-            recipient_id=settings.AFFILIATE_RECIPIENT_ID,
-        ).__dict__
+            obj_split_org = Split(
+                options=obj_options_org,
+                type="percentage",
+                amount=str(data.get("amount_split_for_company")),
+                recipient_id=settings.ORG_RECIPIENT_ID,
+            ).__dict__
 
-        obj_card = Card(card=str(data.get("cvv"))).__dict__
+            obj_split_affiliate = Split(
+                options=obj_options_affiliate,
+                type="percentage",
+                amount=str(data.get("amount_split_for_affiliate")),
+                recipient_id=settings.AFFILIATE_RECIPIENT_ID,
+            ).__dict__
 
-        obj_credit_card = CreditCard(
-            capture=True,
-            statement_descriptor=str(data.get("statement_descriptor")),
-            card_id=str(data.get("card_id")),
-            card=obj_card,
-        ).__dict__
+            obj_card = Card(card=str(data.get("cvv"))).__dict__
 
-        obj_payments = Payments(
-            payment_method="credit_card",
-            credit_card=obj_credit_card,
-            split=[obj_split_org, obj_split_affiliate],
-        ).__dict__
+            obj_credit_card = CreditCard(
+                capture=True,
+                statement_descriptor=str(data.get("statement_descriptor")),
+                card_id=str(data.get("card_id")),
+                card=obj_card,
+            ).__dict__
 
-        obj_items = Items(
-            amount=data.get("amount"),
-            description="Item de teste",
-            quantity=100,
-            code="123asd",
-        ).__dict__
+            obj_payments = Payments(
+                payment_method="credit_card",
+                credit_card=obj_credit_card,
+                split=[obj_split_org, obj_split_affiliate],
+            ).__dict__
 
-        list_items = [obj_items]
-        list_payments = [obj_payments]
+            obj_items = Items(
+                amount=data.get("amount"),
+                description="Item de teste",
+                quantity=100,
+                code="123asd",
+            ).__dict__
 
-        payload = CardPayment(
-            customer_id=self.request.GET.get("customer_id"),
-            items=list_items,
-            payments=list_payments,
-        ).__dict__
+            list_items = [obj_items]
+            list_payments = [obj_payments]
 
-        gateway.insert_order(payload)
+            payload = CardPayment(
+                customer_id=self.request.GET.get("customer_id"),
+                items=list_items,
+                payments=list_payments,
+            ).__dict__
 
-        return super().form_valid(form)
+            gateway.insert_order(payload)
+
+        context = self.get_context_data()
+        return render(request, self.template_name, context)

@@ -2,7 +2,15 @@
 {% block content %}
 <div class="container">
     <h3>Pagamento por cartão<h3>
-    <form method="post">{% csrf_token %}
+    <form method="post">
+        {% csrf_token %}
+        {% if messages %}
+        <ul class="messages error">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+       {% endif %}
         {{ form.as_div }}
         <button class="waves-effect waves-light btn-large" type="submit">Pagar</button>
     </form>
