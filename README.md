@@ -1,1 +1,1 @@
-# payment-testbed
+# pagarme-payment-testbed
