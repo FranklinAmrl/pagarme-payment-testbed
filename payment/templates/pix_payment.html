@@ -3,7 +3,7 @@
 <div class="container">
     <h3>Pagamento por PIX<h3>
     <form method="post">{% csrf_token %}
-        {{ form.as_div }}
+        {{ form.as_table }}
         <button class="waves-effect waves-light btn-large" type="submit">Pagar</button>
     </form>
 </div>
